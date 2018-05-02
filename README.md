@@ -1,5 +1,5 @@
- [![Download](https://api.bintray.com/packages/bastienpaulfr/maven/AndroidSplashScreen/images/download.svg) ](https://bintray.com/bastienpaulfr/maven/AndroidSplashScreen/_latestVersion)
- [![Build Status](https://travis-ci.org/bastienpaulfr/AndroidSplashScreen.svg?branch=master)](https://travis-ci.org/bastienpaulfr/AndroidSplashScreen)
+ [![Download](https://api.bintray.com/packages/coppernic/maven/AndroidSplashScreen/images/download.svg) ](https://bintray.com/coppernic/maven/AndroidSplashScreen/_latestVersion)
+ [![Build Status](https://travis-ci.org/CoppernicSoftware/AndroidSplashScreen.svg?branch=master)](https://travis-ci.org/CoppernicSoftware/AndroidSplashScreen)
 
 
 # AndroidSplashScreen
@@ -12,11 +12,10 @@ Collection of splash screen for android
 ```groovy
 repositories {
     jcenter()
-    maven { url "https://dl.bintray.com/bastienpaulfr/maven" }
 }
 
 dependencies {
-    implementation 'fr.bipi.splash:splash:0.0.1'
+    implementation 'fr.coppernic.lib:splash:0.0.1'
 }
 ```
 
@@ -83,7 +82,7 @@ You can use any color defined in **colors.xml**
 
 ```xml
 <activity
-    android:name="fr.bipi.lib.splash.SplashScreen"
+    android:name="fr.coppernic.lib.splash.SplashScreen"
     android:theme="@style/SplashTheme">
 ```
 
@@ -98,7 +97,7 @@ Launch of target activity is done in adding metadata info in manifest
 
 <!-- Here is the package of app -->
 
-<manifest package="fr.bipi.samples.splash.simple"
+<manifest package="fr.coppernic.samples.splash.simple"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
 
@@ -120,7 +119,7 @@ Launch of target activity is done in adding metadata info in manifest
 <!-- Launchable activity is the splash activity -->
 
         <activity
-            android:name="fr.bipi.lib.splash.SplashScreen"
+            android:name="fr.coppernic.lib.splash.SplashScreen"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -131,7 +130,7 @@ Launch of target activity is done in adding metadata info in manifest
 
             <meta-data
                 android:name="activity"
-                android:value="fr.bipi.samples.splash.simple.MainActivity"/>
+                android:value="fr.coppernic.samples.splash.simple.MainActivity"/>
         </activity>
     </application>
 
@@ -142,7 +141,7 @@ Metadata spec :
 
 * **android:name** : `activity`
 * **android:value** : Explicit and full name of target activity (package + class name).
- Example : `fr.bipi.samples.splash.simple.MainActivity`. Implicit
+ Example : `fr.coppernic.samples.splash.simple.MainActivity`. Implicit
  classes like `.MainActivity` are **not** supported.
 
 ## Timed splash
@@ -157,7 +156,7 @@ the target activity. Just add a metadata.
 
 <!-- Here is the package of app -->
 
-<manifest package="fr.bipi.samples.splash.simple"
+<manifest package="fr.coppernic.samples.splash.simple"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
 
@@ -179,7 +178,7 @@ the target activity. Just add a metadata.
 <!-- Launchable activity is the splash activity -->
 
         <activity
-            android:name="fr.bipi.lib.splash.SplashScreen"
+            android:name="fr.coppernic.lib.splash.SplashScreen"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -190,7 +189,7 @@ the target activity. Just add a metadata.
 
             <meta-data
                 android:name="activity"
-                android:value="fr.bipi.samples.splash.simple.MainActivity"/>
+                android:value="fr.coppernic.samples.splash.simple.MainActivity"/>
             <meta-data
                 android:name="timing"
                 android:value="2000"/>
@@ -220,7 +219,7 @@ t activity. Just add a metadata.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="fr.bipi.samples.splash.permission"
+<manifest package="fr.coppernic.samples.splash.permission"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -238,7 +237,7 @@ t activity. Just add a metadata.
         <activity android:name=".MainActivity">
         </activity>
         <activity
-            android:name="fr.bipi.lib.splash.PermissionSplashScreen"
+            android:name="fr.coppernic.lib.splash.PermissionSplashScreen"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -246,7 +245,7 @@ t activity. Just add a metadata.
             </intent-filter>
             <meta-data
                 android:name="activity"
-                android:value="fr.bipi.samples.splash.permission.MainActivity"/>
+                android:value="fr.coppernic.samples.splash.permission.MainActivity"/>
         </activity>
     </application>
 
