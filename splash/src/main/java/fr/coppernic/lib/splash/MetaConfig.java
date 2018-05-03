@@ -28,6 +28,9 @@ class MetaConfig {
             final ActivityInfo info = activity.getPackageManager()
                 .getActivityInfo(activity.getComponentName(), PackageManager.GET_META_DATA);
 
+            if (info.metaData == null) {
+                throw new NullPointerException("No manifest's metadata found");
+            }
             String targetActivity = info.metaData.getString(KEY_ACTIVITY);
             if (targetActivity == null) {
                 throw new NullPointerException("Target activity is not defined in manifest's meta data");
