@@ -41,12 +41,12 @@ afterEvaluate {
 
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
 
     defaultConfig {
-        applicationId "fr.bipi.samples.splash.timed"
+        applicationId "fr.coppernic.samples.splash.timed"
         minSdkVersion 17
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
 
@@ -63,13 +63,12 @@ android {
 
 }
 
-String support = "26.1.0"
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation "com.android.support:appcompat-v7:$support"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.jakewharton.timber:timber:4.7.0'
     implementation project(":splash")
 
