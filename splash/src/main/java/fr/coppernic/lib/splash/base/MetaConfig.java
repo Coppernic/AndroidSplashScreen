@@ -1,4 +1,4 @@
-package fr.coppernic.lib.splash;
+package fr.coppernic.lib.splash.base;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -17,6 +17,7 @@ class MetaConfig {
 
     private static final String TAG = "MetaConfig";
     private static final String KEY_ACTIVITY = "activity";
+    private static final String KEY_PACKAGE = "package";
     private static final String KEY_TIMING = "timing";
     private static final int DEFAULT_TIMING = 0;
 
@@ -29,14 +30,15 @@ class MetaConfig {
                 .getActivityInfo(activity.getComponentName(), PackageManager.GET_META_DATA);
 
             if (info.metaData == null) {
-                throw new NullPointerException("No manifest's metadata found");
+                throw new RuntimeException("No manifest's metadata found");
             }
             String targetActivity = info.metaData.getString(KEY_ACTIVITY);
             if (targetActivity == null) {
-                throw new NullPointerException("Target activity is not defined in manifest's meta data");
+                throw new RuntimeException("Target activity is not defined in manifest's meta data");
             }
             timing = info.metaData.getInt(KEY_TIMING, DEFAULT_TIMING);
-            ComponentName componentName = new ComponentName(activity.getPackageName(), targetActivity);
+            String packName = info.metaData.getString(KEY_PACKAGE, activity.getPackageName());
+            ComponentName componentName = new ComponentName(packName, targetActivity);
 
             targetIntent = new Intent(activity.getIntent());
             targetIntent.setComponent(componentName);

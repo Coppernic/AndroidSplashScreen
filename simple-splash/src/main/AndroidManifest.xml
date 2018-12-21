@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="fr.coppernic.samples.splash.simple"
+<manifest package="fr.coppernic.samples.splash.simple.gorgeous"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="fr.coppernic.samples.splash.simple.MainActivity">
         </activity>
         <activity
             android:name="fr.coppernic.lib.splash.SplashScreen"
@@ -21,6 +21,9 @@
             <meta-data
                 android:name="activity"
                 android:value="fr.coppernic.samples.splash.simple.MainActivity"/>
+            <!--meta-data
+                android:name="package"
+                android:value="fr.coppernic.samples.splash.simple"/-->
         </activity>
     </application>
 

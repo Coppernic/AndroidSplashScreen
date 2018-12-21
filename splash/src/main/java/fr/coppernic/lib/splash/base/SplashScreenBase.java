@@ -1,4 +1,4 @@
-package fr.coppernic.lib.splash;
+package fr.coppernic.lib.splash.base;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 
+import fr.coppernic.lib.splash.BuildConfig;
 import timber.log.Timber;
 
 public class SplashScreenBase extends Activity {
@@ -54,7 +55,7 @@ public class SplashScreenBase extends Activity {
         }
     }
 
-    void startTargetActivity() {
+    protected void startTargetActivity() {
         if (runTargetActivity != null) {
             handler.postDelayed(runTargetActivity, metaConfig.getTiming());
         }

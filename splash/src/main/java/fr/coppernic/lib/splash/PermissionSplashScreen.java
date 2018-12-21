@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import fr.coppernic.lib.splash.base.SplashScreenBase;
 import timber.log.Timber;
 
 

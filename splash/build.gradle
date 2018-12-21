@@ -1,27 +1,10 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
-    }
-}
-
 plugins {
     id "com.jfrog.bintray" version "1.7.3"
     id "fr.coppernic.versioning" version "3.1.2"
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'com.jakewharton.hugo'
 apply plugin: 'checkstyle'
-
-repositories {
-    mavenCentral()
-    jcenter()
-    google()
-}
 
 task checkstyle(type: Checkstyle) {
     configFile rootProject.file('config/checkstyle.xml')
@@ -61,22 +44,33 @@ android {
 
 }
 
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.android.support:support-v4:$support"
     implementation "com.android.support:appcompat-v7:$support"
     implementation 'com.jakewharton.timber:timber:4.7.0'
 
     compileOnly 'org.jetbrains:annotations:15.0'
 
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.15.0'
-    testImplementation "org.robolectric:robolectric:3.5"
+    testImplementation 'org.mockito:mockito-core:2.23.0'
+    testImplementation "org.robolectric:robolectric:3.8"
     testImplementation "org.awaitility:awaitility:3.0.0"
     testImplementation "org.hamcrest:java-hamcrest:2.0.0.0"
 
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+/*
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion support
+            }
+        }
+    }
+}*/
 
 apply from: rootProject.file('gradle/gradle-publish.gradle')
