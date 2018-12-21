@@ -104,6 +104,63 @@ publishing {
                 }
             }
         }
+
+        artdebug(MavenPublication) {
+            groupId GROUP
+            artifactId "$project.name-debug"
+            version versioning.info.display
+
+            android.libraryVariants.all { variant ->
+                if(variant.buildType.name == "debug") {
+                    variant.outputs.all {
+                        logger.info "Artifact : ${it.outputFile}"
+                        artifact(it.outputFile)
+                    }
+                }
+            }
+
+            artifact androidSourcesJar
+            artifact androidJavadocsJar
+
+            // Customize pom with dependencies
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', POM_DESCRIPTION)
+                root.appendNode('name', rootProject.name)
+                root.appendNode('url', POM_URL)
+                root.children().last() + pomConfig
+                def dependenciesNode = root.appendNode('dependencies')
+
+                project.configurations.implementation.allDependencies.each {
+                    if (it instanceof ExternalModuleDependency
+                            && it.group != null
+                            && it.name != null) {
+
+                        logger.info "dependency : ${it}\nartifact : " +
+                                "${it.getArtifacts().collect { a -> "${a.name}, ${a.type}, ${a.url}, ${a.extension}, ${a.classifier}" }.join(', ')}"
+
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+
+                        if(it.getArtifacts().size() > 0){
+                            dependencyNode.appendNode('type', it.getArtifacts()[0].type)
+                        }
+
+                        //If there are any exclusions in dependency
+                        if (it.excludeRules.size() > 0) {
+                            def exclusionsNode = dependencyNode.appendNode('exclusions')
+                            it.excludeRules.each { rule ->
+                                def exclusionNode = exclusionsNode.appendNode('exclusion')
+                                exclusionNode.appendNode('groupId', rule.group)
+                                exclusionNode.appendNode('artifactId', rule.module)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
