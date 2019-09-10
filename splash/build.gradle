@@ -1,10 +1,11 @@
 plugins {
-    id "com.jfrog.bintray" version "1.7.3"
+    id "com.jfrog.bintray" version "1.8.4"
     id "fr.coppernic.versioning" version "3.1.2"
 }
 
 apply plugin: 'com.android.library'
 apply plugin: 'checkstyle'
+apply plugin: "fr.coppernic.android.javadoc"
 
 task checkstyle(type: Checkstyle) {
     configFile rootProject.file('config/checkstyle.xml')
@@ -23,11 +24,11 @@ afterEvaluate {
 }
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode versioning.info.versionCode
         versionName versioning.info.display
 
@@ -48,29 +49,17 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.android.support:support-v4:$support"
     implementation "com.android.support:appcompat-v7:$support"
-    implementation 'com.jakewharton.timber:timber:4.7.0'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
 
-    compileOnly 'org.jetbrains:annotations:15.0'
+    //logging
+    implementation "org.slf4j:slf4j-api:1.7.25"
+
+    compileOnly 'org.jetbrains:annotations:16.0.1'
 
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.23.0'
-    testImplementation "org.robolectric:robolectric:3.8"
-    testImplementation "org.awaitility:awaitility:3.0.0"
-    testImplementation "org.hamcrest:java-hamcrest:2.0.0.0"
 
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
-/*
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        def requested = details.requested
-        if (requested.group == 'com.android.support') {
-            if (!requested.name.startsWith("multidex")) {
-                details.useVersion support
-            }
-        }
-    }
-}*/
 
 apply from: rootProject.file('gradle/gradle-publish.gradle')

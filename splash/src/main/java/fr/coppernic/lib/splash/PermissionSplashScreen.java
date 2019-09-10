@@ -1,15 +1,15 @@
 package fr.coppernic.lib.splash;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +19,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import fr.coppernic.lib.splash.base.SplashScreenBase;
-import timber.log.Timber;
 
 
 /**
@@ -76,11 +75,12 @@ public class PermissionSplashScreen extends SplashScreenBase
     implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     public static final int UID_SYSTEM = 1000;
+
     private static final String KEY_REQUEST = "PermissionSplashScreen_request";
-    private static final boolean DEBUG = BuildConfig.DEBUG;
+
+    private static final Logger LOG = LoggerFactory.getLogger(TAG);
     private final Set<String> pendingPermissions = new TreeSet<>();
     private String[] permissionsArray;
-    private SharedPreferences prefs;
 
     /**
      * Concat strings
@@ -145,14 +145,11 @@ public class PermissionSplashScreen extends SplashScreenBase
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     //@DebugLog
     @Override
     protected void onDestroy() {
-        clearRequestNumber();
         super.onDestroy();
     }
 
@@ -186,13 +183,11 @@ public class PermissionSplashScreen extends SplashScreenBase
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode != getRequestNumber()) {
-            Timber.e("Request does not correspond, %d instead of %d", requestCode, getRequestNumber());
+            LOG.error("Request does not correspond, {} instead of {}", requestCode, getRequestNumber());
             finish();
             return;
         } else {
-            if (DEBUG) {
-                Timber.d("onRequestPermissionsResult : %d", requestCode);
-            }
+            LOG.debug("onRequestPermissionsResult : {}", requestCode);
             //Reset the protection against multiple requests to be able to ask again.
             clearRequestNumber();
         }
@@ -208,8 +203,8 @@ public class PermissionSplashScreen extends SplashScreenBase
             }
         }
 
-        Timber.d("Granted : %s", concatString(granted, ", "));
-        Timber.d("Denied : %s", concatString(denied, ", "));
+        LOG.debug("Granted : {}", concatString(granted, ", "));
+        LOG.debug("Denied : {}", concatString(denied, ", "));
 
         // Call child class specific permission handlers
         onPermissionsGranted(granted);
@@ -223,7 +218,7 @@ public class PermissionSplashScreen extends SplashScreenBase
         if (!shouldRequestPermissions(pendingPermissions)) {
             startTargetActivity();
         } else {
-            Timber.d("Waiting for next onRequestPermissionsResult");
+            LOG.debug("Waiting for next onRequestPermissionsResult");
         }
     }
 
@@ -263,13 +258,13 @@ public class PermissionSplashScreen extends SplashScreenBase
     private void requestPermissions(Collection<String> permissions) {
         if (shouldRequestPermissions(permissions)) {
             int request = getRequestNumber() + 1;
-            Timber.i("[" + request + "] Requesting permissions : \n" + concatString(permissions, ",\n"));
+            LOG.info("[" + request + "] Requesting permissions : \n" + concatString(permissions, ",\n"));
             pendingPermissions.addAll(permissions);
             //registering the current request to have only one request at a time.
             setRequestNumber(request);
             ActivityCompat.requestPermissions(this, permissions.toArray(new String[]{}), request);
         } else if (isRequestOngoing()) {
-            Timber.d("Request is onGoing, waiting for onRequestPermissionsResult");
+            LOG.debug("Request is onGoing, waiting for onRequestPermissionsResult");
         } else {
             // No request ongoing and no need to request permission, starting target activity here
             startTargetActivity();
@@ -287,11 +282,11 @@ public class PermissionSplashScreen extends SplashScreenBase
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             ret = false;
         } else if (permissions.isEmpty()) {
-            Timber.i("Permissions list is empty, starting target activity...");
+            LOG.info("Permissions list is empty, starting target activity...");
             ret = false;
         } else if (isRequestOngoing()) {
             // Protection against multiple requests
-            Timber.i("Request is ongoing");
+            LOG.info("Request is ongoing");
             ret = false;
         }
         return ret;
@@ -302,18 +297,14 @@ public class PermissionSplashScreen extends SplashScreenBase
     }
 
     private int getRequestNumber() {
-        return prefs.getInt(KEY_REQUEST, 0);
+        return model.bundle.getInt(KEY_REQUEST, 0);
     }
 
-    @SuppressLint("ApplySharedPref")
     private void setRequestNumber(int i) {
-        // We want the pref up to date now, we are using commit instead of apply intentionally
-        prefs.edit().putInt(KEY_REQUEST, i).commit();
+        model.bundle.putInt(KEY_REQUEST, i);
     }
 
-    @SuppressLint("ApplySharedPref")
     private void clearRequestNumber() {
-        // We want the pref up to date now, we are using commit instead of apply intentionally
-        prefs.edit().remove(KEY_REQUEST).commit();
+        model.bundle.remove(KEY_REQUEST);
     }
 }

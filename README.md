@@ -15,9 +15,11 @@ repositories {
 }
 
 dependencies {
-    implementation 'fr.coppernic.lib:splash:0.0.1'
+    implementation 'fr.coppernic.lib:splash:0.1.0'
 }
 ```
+
+This lib is logging with [slf4j](https://www.slf4j.org/)
 
 ## Presentation
 
@@ -84,6 +86,7 @@ You can use any color defined in **colors.xml**
 <activity
     android:name="fr.coppernic.lib.splash.SplashScreen"
     android:theme="@style/SplashTheme">
+</activity>
 ```
 
 ### Simple splash
