@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'fr.coppernic.lib:splash:0.1.0'
+    implementation 'fr.coppernic.lib:splash:0.2.1'
 }
 ```
 

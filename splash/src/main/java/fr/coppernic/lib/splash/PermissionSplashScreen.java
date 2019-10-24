@@ -77,10 +77,11 @@ public class PermissionSplashScreen extends SplashScreenBase
     public static final int UID_SYSTEM = 1000;
 
     private static final String KEY_REQUEST = "PermissionSplashScreen_request";
-
     private static final Logger LOG = LoggerFactory.getLogger(TAG);
+
     private final Set<String> pendingPermissions = new TreeSet<>();
     private String[] permissionsArray;
+
 
     /**
      * Concat strings
@@ -129,7 +130,6 @@ public class PermissionSplashScreen extends SplashScreenBase
         return ret;
     }
 
-    //@DebugLog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,32 +147,29 @@ public class PermissionSplashScreen extends SplashScreenBase
         }
     }
 
-    //@DebugLog
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
 
-    //@DebugLog
     @Override
     protected void onStart() {
         super.onStart();
+        LOG.trace("onStart, current request : {}", getRequestNumber());
         requestPermissions(getDeniedPermissions(Arrays.asList(permissionsArray)));
     }
 
-    //@DebugLog
     @Override
     protected void onStop() {
         super.onStop();
+        LOG.trace("onStop, current request : {}", getRequestNumber());
     }
 
-    //@DebugLog
     @Override
     protected void onResume() {
         super.onResume();
     }
 
-    //@DebugLog
     @Override
     protected void onPause() {
         super.onPause();
@@ -182,7 +179,9 @@ public class PermissionSplashScreen extends SplashScreenBase
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        if (requestCode != getRequestNumber()) {
+        // We are checking isSharingSystemUid() because we can rely on checkSelfPermission on regular app
+        // Issue on ID Platform where app is killed and restarted in the middle of permission request
+        if (requestCode != getRequestNumber() && isSharingSystemUid(this)) {
             LOG.error("Request does not correspond, {} instead of {}", requestCode, getRequestNumber());
             finish();
             return;
@@ -280,6 +279,7 @@ public class PermissionSplashScreen extends SplashScreenBase
     protected boolean shouldRequestPermissions(Collection<String> permissions) {
         boolean ret = true;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            LOG.info("Android OS version is below Marshmallow, do not ask anything");
             ret = false;
         } else if (permissions.isEmpty()) {
             LOG.info("Permissions list is empty, starting target activity...");
@@ -301,10 +301,11 @@ public class PermissionSplashScreen extends SplashScreenBase
     }
 
     private void setRequestNumber(int i) {
+        LOG.trace("Set request number " + i);
         model.bundle.putInt(KEY_REQUEST, i);
     }
 
     private void clearRequestNumber() {
-        model.bundle.remove(KEY_REQUEST);
+        setRequestNumber(0);
     }
 }
