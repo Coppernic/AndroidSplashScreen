@@ -1,15 +1,16 @@
 package fr.coppernic.lib.splash.base;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 
 public class SplashScreenBase extends AppCompatActivity {
@@ -78,7 +79,7 @@ public class SplashScreenBase extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         LOG.debug("onActivityResult, code : {}, result : {}, intent : {} ",
                   requestCode, resultCode, (data == null ? "null" : data));
-
+        super.onActivityResult(requestCode, resultCode, data);
         setResult(resultCode, data);
         finish();
     }
