@@ -5,8 +5,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +16,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import fr.coppernic.lib.splash.base.SplashScreenBase;
 
 
