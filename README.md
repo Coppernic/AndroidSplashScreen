@@ -1,5 +1,5 @@
- [![Download](https://api.bintray.com/packages/coppernic/maven/AndroidSplashScreen/images/download.svg) ](https://bintray.com/coppernic/maven/AndroidSplashScreen/_latestVersion)
- [![Build Status](https://travis-ci.org/CoppernicSoftware/AndroidSplashScreen.svg?branch=master)](https://travis-ci.org/CoppernicSoftware/AndroidSplashScreen)
+[![Download](https://jitpack.io/v/coppernic/AndroidSplashScreen.svg)](https://jitpack.io/#coppernic/AndroidSplashScreen)
+[![Build Status](https://travis-ci.org/CoppernicSoftware/AndroidSplashScreen.svg?branch=master)](https://travis-ci.org/CoppernicSoftware/AndroidSplashScreen)
 
 
 # AndroidSplashScreen
@@ -11,11 +11,11 @@ Collection of splash screen for android
 
 ```groovy
 repositories {
-    jcenter()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    implementation 'fr.coppernic.lib:splash:0.2.1'
+    implementation 'fr.coppernic.coppernic.AndroidSplashScreen:splash:0.3.0'
 }
 ```
 
