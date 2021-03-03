@@ -1,8 +1,5 @@
 apply plugin: 'maven-publish'
 
-String v = "$project.versioning.info.display"
-String t = "$project.versioning.info.tag"
-
 task androidJavadocs(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
@@ -105,29 +102,4 @@ publishing {
             }
         }
     }
-}
-
-bintray {
-    user = project.hasProperty("bintray_user")?project.bintray_user:""
-    key = project.hasProperty("bintray_key")?project.bintray_key:""
-    publish = true
-    pkg {
-        repo = "maven"
-        name = rootProject.name
-        userOrg = 'coppernic'
-        licenses = ["Apache-2.0"]
-        labels = ['Splash', 'Android', 'Screen']
-        vcsUrl = POM_SCM_URL
-        websiteUrl = POM_URL
-        issueTrackerUrl = POM_ISSUES_URL
-        githubRepo = GITHUB_REPO //Optional Github repository
-        githubReleaseNotesFile = GITHUB_README //Optional Github readme file
-        version {
-            name = v
-            desc = POM_DESCRIPTION
-            released = new Date()
-            vcsTag = t
-        }
-    }
-    publications = ['art']
 }
